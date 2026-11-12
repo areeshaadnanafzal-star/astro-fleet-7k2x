@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Astro-Math Rescue: Fraction & Multiplication Fleet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#FF5A5F;--gold:#FFD166;--mint:#06D6A0;--cyan:#118AB2;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;min-height:100%;color:#F8FAFC;font:800 18px Nunito,sans-serif}
+body{background:radial-gradient(ellipse at 15% 0,#1e1b4b,transparent 55%),radial-gradient(ellipse at 95% 100%,#134e6b,transparent 50%),#0F172A fixed}
+h1,h2,h3,.f{font-family:Fredoka,sans-serif;font-weight:700;margin:0}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+#app{max-width:880px;margin:0 auto;padding:54px 14px 30px}
+.shake{animation:shake .4s}@keyframes shake{20%{transform:translate(-9px,4px)}40%{transform:translate(9px,-4px)}60%{transform:translate(-5px,3px)}80%{transform:translate(4px,-2px)}}
+.btn{font:700 clamp(18px,4vw,26px) Fredoka,sans-serif;color:#0F172A;background:var(--gold);border:0;border-bottom:4px solid #c99a1e;border-radius:24px;padding:12px 22px;cursor:pointer;min-height:48px;touch-action:manipulation;box-shadow:inset 0 4px 0 #fff7,inset 0 -8px 12px #0002,0 6px 14px #0006}
+.btn:active:not(:disabled){transform:translateY(4px);border-bottom-width:0;margin-bottom:4px}
+.coral{background:var(--coral);border-bottom-color:#b8353a;color:#fff}.mint{background:var(--mint);border-bottom-color:#04a07a}.cyan{background:var(--cyan);border-bottom-color:#0b5a78;color:#fff}
+.sm{padding:6px 14px;font-size:20px;min-height:40px}
+.squish{animation:squish .35s}@keyframes squish{30%{transform:scale(1.18,.82)}60%{transform:scale(.9,1.12)}}
+.card{background:linear-gradient(#1e293b,#172033);border-radius:24px;border:2px solid #ffffff14;box-shadow:inset 0 3px 0 #ffffff18,inset 0 -8px 16px #0006,0 8px 24px #0006;padding:16px}
+.pop{position:fixed;font:700 30px Fredoka;color:var(--gold);pointer-events:none;z-index:60;animation:pop 1.1s forwards;text-shadow:0 3px 0 #000a;transform:translateX(-50%)}
+@keyframes pop{to{margin-top:-100px;opacity:0;scale:1.4}}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap}.col{display:flex;flex-direction:column;gap:14px;max-width:320px;margin:20px auto}.ctr{text-align:center}
+.lv{flex:1;min-width:54px;display:flex;flex-direction:column;align-items:center;padding:8px 4px}.lv small{font:800 14px Nunito;height:16px}
+.scene{position:relative;height:clamp(170px,30vh,240px);margin:6px 0 10px;border-radius:24px;overflow:hidden;background:linear-gradient(#1e1b4b,#0b3a55);box-shadow:inset 0 4px 14px #000a}
+.sh{position:absolute;left:50%;top:2px;width:62px;margin-left:-31px;animation:fl 3s ease-in-out infinite;z-index:2}
+.cp{position:absolute;left:50%;top:15px;width:22px;margin-left:-11px}
+#bm{position:absolute;left:50%;top:60px;bottom:0;width:170px;margin-left:-85px;background:linear-gradient(#FFD166cc,#06D6A022);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);transition:opacity .8s}
+.al{position:absolute;left:50%;width:44px;margin-left:-22px;transition:bottom 1s}
+.cry{position:absolute;left:50%;bottom:0;width:140px;margin-left:-70px}
+@keyframes fl{50%{transform:translateY(-8px)}}.floaty{animation:fl 3s ease-in-out infinite}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.opt{font:800 clamp(28px,7vw,44px) Nunito,sans-serif;background:var(--cyan);border-bottom-color:#0b5a78;color:#fff}
+.opt.dim{opacity:.35}.opt.good{background:var(--mint);border-bottom-color:#04a07a;color:#0F172A}
+.wob{animation:wob .5s}@keyframes wob{25%{transform:rotate(-8deg) scale(1.05)}50%{transform:rotate(7deg)}75%{transform:rotate(-4deg)}}
+.qt{font:600 clamp(18px,4vw,24px) Fredoka,sans-serif;margin:4px 0 8px}.big{font-size:clamp(28px,7vw,42px);color:var(--gold);margin:6px 0}
+.hint{color:var(--mint);font-size:clamp(16px,3.6vw,20px);min-height:24px;margin:8px 0 0}
+.qm{display:inline-block;min-width:1.3em;border-radius:14px;background:#0F172A;border:3px dashed var(--mint);color:var(--mint)}
+.tb{height:14px;background:#0009;border-radius:9px;overflow:hidden;margin:4px 0}.tb i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--mint),var(--gold));border-radius:9px;transition:width .1s linear}
+.sl{cursor:pointer;transition:fill .15s}.sl.pl{animation:pl .6s 3}@keyframes pl{50%{opacity:.3}}
+.stars span{font-size:64px;color:#334155;display:inline-block}.stars .on{color:var(--gold);text-shadow:0 0 18px #FFD16699;animation:st .6s backwards}@keyframes st{from{transform:scale(0) rotate(-90deg)}}
+.modal{position:fixed;inset:0;background:#000b;z-index:70;display:flex;align-items:center;justify-content:center;padding:16px}.modal .card{max-width:440px;width:100%;max-height:90vh;overflow:auto}
+input{font:800 28px Nunito;width:100%;padding:10px;border-radius:16px;border:3px solid var(--cyan);background:#0F172A;color:#fff;margin:8px 0;text-align:center;user-select:text}
+.shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:8px 0 18px}.shop .card{text-align:center;padding:10px}.shop svg{height:90px}.shop .btn{margin-top:8px;font-size:18px;padding:8px 10px}
+#mute{position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:80}
+@media(prefers-reduced-motion:reduce){.sh,.floaty{animation:none}}
+</style></head><body>
+<canvas id="fx"></canvas><button class="btn sm" id="mute" onclick="mute()" aria-label="Mute or unmute">🔊</button><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s),app=$('#app'),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+/* ---------- Sound ---------- */
+class SoundEngine{constructor(){this.c=null;this.muted=false}
+init(){if(!this.c){try{this.c=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(this.c&&this.c.state=='suspended')this.c.resume()}
+t(f,d,type='sine',v=.15,at=0,f2){if(this.muted||!this.c)return;const c=this.c,o=c.createOscillator(),g=c.createGain(),s=c.currentTime+at;o.type=type;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(v,s+.02);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+.05)}
+click(){this.t(900,.06,'square',.05,0,300)}
+chime(){[523.25,659.25,783.99,1046.5].forEach((f,i)=>this.t(f,.4,'triangle',.14,i*.08))}
+boing(){[300,200,280,190,240,170].forEach((f,i)=>this.t(f,.14,'sine',.17,i*.09,f*.8))}
+whoosh(){if(this.muted||!this.c)return;const c=this.c,n=c.sampleRate*.8,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type='bandpass';f.Q.value=2;f.frequency.setValueAtTime(300,c.currentTime);f.frequency.exponentialRampToValueAtTime(2500,c.currentTime+.7);const g=c.createGain();g.gain.value=.25;s.connect(f);f.connect(g);g.connect(c.destination);s.start()}
+fanfare(){[[523,0,.2],[659,.18,.2],[784,.36,.2],[1046,.54,.4],[784,.9,.15],[1046,1.05,.15],[1319,1.2,.7]].forEach(([f,a,d])=>{this.t(f,d,'triangle',.16,a);this.t(f/2,d,'sine',.1,a)})}}
+const snd=new SoundEngine();
+/* ---------- State ---------- */
+const KEY='astroMathRescue_v1';
+let S={gems:0,stars:{},skin:0,pilot:0,ownS:[0],ownP:[0],t:0,st:{mult:[0,0],frac:[0,0],miss:[0,0]},hi:0,mute:false},G={},G2=0,lx=innerWidth/2,ly=innerHeight/2;
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+snd.muted=S.mute;$('#mute').textContent=S.mute?'🔇':'🔊';
+function mute(){S.mute=!S.mute;snd.muted=S.mute;$('#mute').textContent=S.mute?'🔇':'🔊';save()}
+setInterval(()=>{if(!document.hidden){S.t++;if(S.t%10==0)save()}},1000);
+/* ---------- Art ---------- */
+const WORLDS=[{n:'Pod Grid Nebula',i:'🔮',c:'#FF5A5F',t:'mult'},{n:'Crystal Slice Reef',i:'🍕',c:'#06D6A0',t:'frac'},{n:'Fuel Cell Foundry',i:'🔋',c:'#118AB2',t:'miss'},{n:'Boss Asteroid Gauntlet',i:'☄️',c:'#FFD166',t:'boss'}];
+const SKINS=[['Rookie Red','#FF5A5F','#FFD166',0],['Mint Dart','#06D6A0','#0F172A',20],['Cyan Comet','#118AB2','#FFD166',40],['Gold Rush','#FFD166','#FF5A5F',60],['Nebula Violet','#8B5CF6','#06D6A0',90],['Star Chrome','#CBD5E1','#118AB2',120]];
+const PILOTS=[['Blip','#06D6A0',2,0],['Zuzu','#FF9ECF',1,30],['Orbo','#FFD166',3,60],['Pip','#8BE0FF',2,100]];
+const ship=(k,fl=1)=>{const a=SKINS[k][1],b=SKINS[k][2];return `<svg viewBox="0 0 120 140"><defs><linearGradient id="g${k}"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>${fl?'<path d="M45 104Q60 150 75 104Z" fill="#FFD166"><animate attributeName="d" dur=".25s" repeatCount="indefinite" values="M45 104Q60 140 75 104Z;M45 104Q60 160 75 104Z;M45 104Q60 140 75 104Z"/></path>':''}<path d="M10 104L38 62V106ZM110 104L82 62V106Z" fill="${b}"/><path d="M60 8C84 30 84 80 80 108H40C36 80 36 30 60 8Z" fill="${a}"/><path d="M60 8C84 30 84 80 80 108H40C36 80 36 30 60 8Z" fill="url(#g${k})"/><circle cx="60" cy="52" r="15" fill="#0F172A" stroke="${b}" stroke-width="5"/><ellipse cx="55" cy="46" rx="5" ry="3.5" fill="#fff" opacity=".7"/></svg>`};
+const pilot=k=>{const c=PILOTS[k][1],e=PILOTS[k][2],eyes=[...Array(e)].map((_,j)=>{const x=50+(j-(e-1)/2)*(e==3?16:22),r=e==3?6:e==1?10:8;return `<circle cx="${x}" cy="48" r="${r}" fill="#fff"/><circle cx="${x}" cy="49" r="${r/2.4}" fill="#0F172A"/>`}).join('');return `<svg viewBox="0 0 100 100"><path d="M35 22L30 8M65 22L70 8" stroke="${c}" stroke-width="4" stroke-linecap="round"/><circle cx="30" cy="8" r="5" fill="#FF5A5F"/><circle cx="70" cy="8" r="5" fill="#FF5A5F"/><ellipse cx="50" cy="54" rx="34" ry="32" fill="${c}"/><ellipse cx="38" cy="38" rx="12" ry="7" fill="#fff" opacity=".35"/>${eyes}<path d="M40 70Q50 80 60 70" stroke="#0F172A" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="29" cy="64" r="5" fill="#FF5A5F" opacity=".45"/><circle cx="71" cy="64" r="5" fill="#FF5A5F" opacity=".45"/></svg>`};
+/* ---------- Juice ---------- */
+const cv=$('#fx'),cx=cv.getContext('2d');let P=[],run=0;
+function fit(){cv.width=innerWidth;cv.height=innerHeight}addEventListener('resize',fit);fit();
+function conf(n=40,x=innerWidth/2,y=innerHeight/3){const cl=['#FF5A5F','#FFD166','#06D6A0','#118AB2','#fff'];for(let i=0;i<n;i++)P.push({x,y,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,r:Math.random()*5+3,c:cl[i%5],a:Math.random()*6,l:100});if(!run){run=1;requestAnimationFrame(loop)}}
+function loop(){cx.clearRect(0,0,cv.width,cv.height);P=P.filter(p=>p.l-->0);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.vx*=.99;p.a+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.globalAlpha=Math.min(1,p.l/30);cx.fillStyle=p.c;cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});if(P.length)requestAnimationFrame(loop);else{run=0;cx.clearRect(0,0,cv.width,cv.height)}}
+function pop(t){const d=document.createElement('div');d.className='pop';d.textContent=t;d.style.left=Math.min(Math.max(lx,90),innerWidth-90)+'px';d.style.top=ly-30+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1100)}
+function hit(){app.classList.remove('shake');void app.offsetWidth;app.classList.add('shake');pop('☄️ Impact!')}
+document.addEventListener('pointerdown',e=>{snd.init();lx=e.clientX;ly=e.clientY;const b=e.target.closest('.btn,.sl');if(b&&!b.disabled){b.classList.remove('squish');void b.offsetWidth;b.classList.add('squish');snd.click()}});
+/* ---------- Screens ---------- */
+const bar=t=>`<div class="bar"><button class="btn cyan sm" onclick="home()">⬅</button><h2>${t}</h2><span class="f">💎 ${S.gems}</span></div>`;
+function home(){clearInterval(G.tm);const st=Object.values(S.stars).reduce((a,b)=>a+b,0);app.innerHTML=`<div class="ctr"><div class="floaty" style="width:130px;margin:10px auto">${ship(S.skin)}</div><h1 style="font-size:clamp(32px,8vw,56px);color:var(--gold);text-shadow:0 4px 0 #b8741a">Astro-Math Rescue</h1><h3 style="color:var(--mint)">Fraction & Multiplication Fleet</h3><p>💎 ${S.gems} Star Gems · ★ ${st}/60</p><div class="col"><button class="btn" onclick="levels()">🚀 Play</button><button class="btn cyan" onclick="hangar()">🛠️ Hangar</button><button class="btn coral" onclick="parents()">👪 Parents</button></div></div>`}
+function levels(){clearInterval(G.tm);app.innerHTML=bar('Missions')+WORLDS.map((w,wi)=>`<div class="card" style="margin:12px 0;border-color:${w.c}"><h3 style="color:${w.c};margin-bottom:10px">${w.i} World ${wi+1}: ${w.n}</h3><div class="row">${[0,1,2,3,4].map(s=>{const id=wi*5+s,ok=id==0||S.stars[id-1];return `<button class="btn lv" ${ok?`onclick="start(${id})"`:'disabled style="filter:grayscale(1);opacity:.5"'}>${ok?s+1:'🔒'}<small>${'★'.repeat(S.stars[id]||0)}</small></button>`}).join('')}</div></div>`).join('')}
+function hangar(){const it=(k,ty,svg,n,c)=>{const own=(ty=='s'?S.ownS:S.ownP).includes(k),on=(ty=='s'?S.skin:S.pilot)==k;return `<div class="card" ${on?'style="border-color:var(--gold)"':''}>${svg}<div class="f">${n}</div><button class="btn ${on?'mint':own?'cyan':''}" onclick="buy('${ty}',${k})">${on?'Equipped ✓':own?'Equip':'💎 '+c}</button></div>`};
+app.innerHTML=bar('Hangar')+`<div class="card ctr" style="display:flex;justify-content:center;align-items:flex-end;gap:12px"><div style="width:140px" class="floaty">${ship(S.skin)}</div><div style="width:84px">${pilot(S.pilot)}</div></div><h3 style="margin:14px 0 4px">Ship Skins</h3><div class="shop">${SKINS.map((s,k)=>it(k,'s',ship(k,0),s[0],s[3])).join('')}</div><h3>Co-Pilots</h3><div class="shop">${PILOTS.map((p,k)=>it(k,'p',pilot(k),p[0],p[3])).join('')}</div>`}
+function buy(ty,k){const own=ty=='s'?S.ownS:S.ownP,c=(ty=='s'?SKINS:PILOTS)[k][3];if(!own.includes(k)){if(S.gems<c){snd.boing();lx=innerWidth/2;ly=200;pop('Need more gems!');return}S.gems-=c;own.push(k);snd.chime();conf(50)}if(ty=='s')S.skin=k;else S.pilot=k;save();hangar()}
+/* ---------- Gameplay ---------- */
+const sl=(i,d)=>{const p=t=>`${110+100*Math.cos(t)} ${110+100*Math.sin(t)}`,a=i/d*6.2832-1.5708,b=(i+1)/d*6.2832-1.5708;return `M110 110L${p(a)}A100 100 0 0 1 ${p(b)}Z`};
+const opts=ans=>{const s=new Set([ans]);while(s.size<4){const v=ans+R(-6,6);if(v>0)s.add(v)}return [...s].sort(()=>Math.random()-.5)};
+function start(id){clearInterval(G.tm);const w=id/5|0,boss=w==3;G={id,w,s:id%5,i:0,N:boss?6:5,first:0,bonus:0,score:0,lives:5,boss};
+app.innerHTML=`<div class="bar"><button class="btn cyan sm" onclick="levels()">✖</button><h2 id="hd"></h2><span class="f" id="sc">⭐ 0</span></div>${boss?'<div class="tb"><i id="tbar"></i></div>':''}<div class="scene"><div id="bm" style="opacity:.3"></div><div class="sh">${ship(S.skin)}<div class="cp">${pilot(S.pilot)}</div></div><div class="al" id="al" style="bottom:8%">${pilot((id+1)%4)}</div><svg class="cry" viewBox="0 0 120 50"><path d="M5 50L30 12L48 30L66 4L92 32L115 50Z" fill="#118AB2"/><path d="M66 4L92 32L66 50Z" fill="#0b6a8a"/><path d="M30 12L48 30L30 50Z" fill="#7fdcf5" opacity=".7"/></svg></div><div class="card" id="qa"></div>`;snd.whoosh();next()}
+function hd(){$('#hd').textContent=`${G.i+1}/${G.N}`+(G.boss?'  '+'❤️'.repeat(Math.max(G.lives,0)):'')}
+function prog(){const p=G.i/G.N;$('#al').style.bottom=8+p*44+'%';$('#bm').style.opacity=.3+p*.7;hd()}
+function gen(){const w=G.w,d=w==3?R(1,3):G.s,t=w==3?['mult','frac','miss'][R(0,2)]:WORLDS[w].t;
+if(t=='frac'){const den=[2,3,4,6,8][d];return{t,d:den,n:R(1,den-1)}}
+const a=R(2,3+d),b=R(2,4+d);return{t,a,b,ans:t=='mult'?a*b:b}}
+function next(){G.q=gen();G.tries=0;G.counted=0;G.lock=0;G.sel=new Set();hd();const q=G.q;let h;
+const oh=()=>{G.o=opts(q.ans);return `<div class="opts">${G.o.map(v=>`<button class="btn opt" id="o${v}" onclick="pick(${v})">${v}</button>`).join('')}</div>`};
+if(q.t=='mult')h=`<p class="qt">Energy pods power the beam. How many pods in all?</p><div class="ctr"><svg viewBox="0 0 ${q.b*32} ${q.a*32}" style="width:${Math.min(q.b*52,330)}px;max-width:100%">${Array.from({length:q.a*q.b},(_,i)=>{const r=i/q.b|0,x=i%q.b*32;return `<circle class="pod" data-r="${r}" cx="${x+16}" cy="${r*32+16}" r="12" fill="#06D6A0" stroke="#ffffff66" stroke-width="2"/><circle cx="${x+12}" cy="${r*32+12}" r="4" fill="#fff" opacity=".6"/>`}).join('')}</svg></div><div class="f big ctr">${q.a} × ${q.b} = ?</div>${oh()}`;
+else if(q.t=='frac')h=`<p class="qt ctr">Charge the shield to <span class="f" style="color:var(--gold);font-size:1.7em">${q.n}/${q.d}</span></p><div class="ctr"><svg id="pz" viewBox="0 0 220 220" style="width:min(68vw,280px)"><defs><radialGradient id="gl" cx=".35" cy=".3"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>${Array.from({length:q.d},(_,i)=>`<path class="sl" id="s${i}" d="${sl(i,q.d)}" onclick="tg(${i})" fill="#17324d" stroke="#0F172A" stroke-width="4"/>`).join('')}<circle cx="110" cy="110" r="100" fill="url(#gl)" pointer-events="none"/></svg></div><p class="f ctr" id="ct">Filled: 0 of ${q.d}</p><div class="ctr"><button class="btn mint" onclick="chk()">⚡ Fire Shield</button></div>`;
+else h=`<p class="qt">Find the missing factor to fill the fuel cell!</p><div class="f big ctr">${q.a} × <span class="qm">?</span> = ${q.a*q.b}</div>${oh()}`;
+$('#qa').innerHTML=h+'<p class="f hint" id="hint"></p>';if(G.boss)timer()}
+function tg(i){if(G.lock)return;G.sel.has(i)?G.sel.delete(i):G.sel.add(i);$('#s'+i).setAttribute('fill',G.sel.has(i)?'#06D6A0':'#17324d');$$('.sl').forEach(s=>s.classList.remove('pl'));$('#ct').textContent=`Filled: ${G.sel.size} of ${G.q.d}`;snd.t(500+G.sel.size*80,.12,'triangle',.1)}
+function att(){if(!G.counted){G.counted=1;S.st[G.q.t][0]++}}
+function pick(v){if(G.lock)return;if(v==G.q.ans)ok();else bad($('#o'+v))}
+function chk(){if(G.lock)return;if(G.sel.size==G.q.n)ok();else bad()}
+function ok(){G.lock=1;clearInterval(G.tm);att();const f=!G.tries;if(f){S.st[G.q.t][1]++;G.first++}else G.bonus++;G.score+=f?100:150;snd.chime();pop(f?'+100':'+150 💪 Never give up!');conf(35,lx,ly);const e=$('#o'+G.q.ans);if(e)e.classList.add('good');$('#sc').textContent='⭐ '+G.score;G.i++;prog();save();setTimeout(G.i>=G.N?win:next,1000)}
+function bad(el){att();G.tries++;snd.boing();if(el){el.disabled=true;el.classList.add('wob','dim')}else{const z=$('#pz');z.classList.add('wob');setTimeout(()=>z.classList.remove('wob'),500)}
+if(G.boss){G.lives--;hit();if(G.lives<=0)return lose()}hd();hint()}
+function say(t){$('#hint').innerHTML=t}
+function hint(){const q=G.q;
+if(q.t=='mult'){const c=['#FF5A5F','#FFD166','#118AB2','#06D6A0'];$$('.pod').forEach(p=>p.setAttribute('fill',c[p.dataset.r%4]));say(`Look: ${q.a} rows with ${q.b} pods in each row. ${Array(q.a).fill(q.b).join(' + ')} = ?`)}
+else if(q.t=='frac'){const f=G.sel.size;say(f<q.n?`The shield has ${q.d} equal slices. You need ${q.n} filled, you have ${f}. Add ${q.n-f} more!`:f>q.n?`${q.n}/${q.d} means ${q.n} slices out of ${q.d}. You filled ${f}. Take away ${f-q.n}!`:'');$$('.sl').forEach((s,i)=>{if(G.sel.has(i)==(f>q.n))s.classList.add('pl')})}
+else say(`Count the groups of ${q.a}: ${Array(q.b).fill(q.a).join(' + ')} = ${q.a*q.b}<svg viewBox="0 0 ${q.a*22} ${q.b*22}" style="width:${Math.min(q.a*30,260)}px;display:block;margin:6px auto">${Array.from({length:q.a*q.b},(_,i)=>`<rect x="${i%q.a*22+2}" y="${(i/q.a|0)*22+2}" width="18" height="18" rx="5" fill="${['#FF5A5F','#FFD166','#118AB2','#06D6A0'][(i/q.a|0)%4]}"/>`).join('')}</svg>`)}
+function timer(){clearInterval(G.tm);let t=0;const T=16;G.tm=setInterval(()=>{t+=.1;const b=$('#tbar');if(b)b.style.width=100-t/T*100+'%';if(t>=T){clearInterval(G.tm);att();G.lives--;hit();snd.boing();if(G.lives<=0)return lose();next()}},100)}
+function win(){const N=G.N,st=G.first>=N?3:G.first>=N-2?2:1,gems=st*5+G.bonus*3,last=G.id==19;S.stars[G.id]=Math.max(S.stars[G.id]||0,st);S.gems+=gems;if(G.boss)S.hi=Math.max(S.hi,G.score);save();snd.fanfare();snd.whoosh();[0,300,600].forEach(t=>setTimeout(()=>conf(80,Math.random()*innerWidth,innerHeight/3),t));
+app.innerHTML=bar(last?'Mother Ship Saved!':'Rescued!')+`<div class="card ctr"><h1 style="color:var(--gold)">${last?'You saved the fleet! 🎉':'Alien rescued! 🎉'}</h1><div class="stars">${[1,2,3].map(n=>`<span class="${n<=st?'on':''}" style="animation-delay:${n*.25}s">★</span>`).join('')}</div><p class="f">Score ${G.score} · 💎 +${gems}${G.bonus?`<br>(includes ${G.bonus*3} bonus for trying again!)`:''}${G.boss?`<br>Best boss score: ${S.hi}`:''}</p><div class="col">${G.id<19?`<button class="btn mint" onclick="start(${G.id+1})">Next mission ▶</button>`:''}<button class="btn" onclick="start(${G.id})">Play again</button><button class="btn cyan" onclick="levels()">Missions</button></div></div>`}
+function lose(){clearInterval(G.tm);G.lock=1;save();setTimeout(()=>{app.innerHTML=bar('Shield cracked')+`<div class="card ctr"><h1 style="color:var(--coral)">The asteroids got through!</h1><p class="f">Every captain crashes sometimes. Try again, you can do it!</p><div class="col"><button class="btn mint" onclick="start(${G.id})">Try again</button><button class="btn cyan" onclick="levels()">Missions</button></div></div>`},700)}
+/* ---------- Parents ---------- */
+function modal(h){let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';m.className='modal';document.body.appendChild(m)}m.innerHTML=`<div class="card">${h}</div>`}
+const shut=()=>{const m=$('#modal');if(m)m.remove()};
+function parents(){const a=R(12,19),b=R(3,9);G2=a*b;modal(`<h3>Grown-ups only</h3><p>Solve to continue: <b>${a} × ${b}</b></p><input id="gi" inputmode="numeric" placeholder="Answer"><div class="row"><button class="btn mint" onclick="gate()">Enter</button><button class="btn coral" onclick="shut()">Close</button></div>`)}
+function gate(){const i=$('#gi');if(+i.value==G2)dash();else{snd.boing();i.value='';i.placeholder='Try again'}}
+function dash(){const nm={mult:'Multiplication arrays',frac:'Fractions',miss:'Missing factors'},T=Object.values(S.st),A=T.reduce((a,x)=>a+x[0],0),C=T.reduce((a,x)=>a+x[1],0);
+modal(`<h3>Parent dashboard</h3><p class="f">Accuracy on first try: ${A?Math.round(C/A*100):0}%<br>Time played: ${(S.t/60).toFixed(1)} min<br>Missions done: ${Object.keys(S.stars).length}/20</p>${Object.keys(nm).map(k=>{const a=S.st[k][0],p=a?Math.round(S.st[k][1]/a*100):0;return `<p>${nm[k]}: ${p}% (${a} questions) ${a>=8&&p>=80?'✅ Mastered':a?'📈 Practising':'Not started'}</p><div class="tb"><i style="width:${p}%"></i></div>`}).join('')}<div class="row" style="margin-top:14px"><button class="btn coral" onclick="shut()">Close</button></div>`)}
+home();
+</script></body></html>
